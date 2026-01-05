@@ -113,10 +113,10 @@ struct dep {                    /* stores paths that a file depends on */
 } dep_files[1000];
 int dep_file_index;
 
-qsort_strcmp(a, b)
-struct dep *a, *b;
+int qsort_strcmp(const void *va, const void *vb)
 {
-extern int strcmp();
+        const struct dep *a = va;
+        const struct dep *b = vb;
         return strcmp(a->str, b->str);
 }
 
