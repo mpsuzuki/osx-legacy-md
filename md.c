@@ -165,7 +165,7 @@ int size;
                 if (*token++ != '-' || !*token)
                         break;
                 else { register int flag;
-                        for ( ; flag = *token++ ; ) {
+                        for ( ; (flag = *token++) ; ) {
                                 switch (flag) {
                                 case 'd':
                                         delete++;
@@ -190,7 +190,7 @@ int size;
                                         expunge++;
                                         break;
                                 case 'D':
-                                        for ( ; flag = *token++ ; )
+                                        for ( ; (flag = *token++) ; )
                                                 switch (flag) {
                                                 case 'c':
                                                         D_contents++;
@@ -240,7 +240,7 @@ newtoken: ;
                         exit(1);
                 } else if (D_open)
                         printf("%s: opened outfile \"%s\"\n", name, outfile);
-        } else if (mak = find_mak(makefile)) {
+        } else if ((mak = find_mak(makefile))) {
                 makout = temp_mak();
                 out = makout;
                 if (expunge)
@@ -259,7 +259,7 @@ newtoken: ;
         for (; argc--; argv++) {
                 dep_file_index = 0;
 
-                if (size = read_dep(*argv)) {
+                if ((size = read_dep(*argv))) {
 
                         save_dot_o();
                         if (D_depend) printf("%s: dot_o = \"%s\"\n", name, dot_o);
@@ -393,7 +393,8 @@ register int c;
                 cp = dep_line;
                 lp[-1] = 0;
                         /* skip .o file name */
-                while ((c = *cp++) && c != ':'); if (!c) continue;
+                while ((c = *cp++) && c != ':');
+                if (!c) continue;
 next_filename:
                 i = 0;
                 abspath = 0;
@@ -427,7 +428,7 @@ next_filename:
                 if (abspath)
                         *cp++ = '/';
                 for (c=0; c<i; c++) {register char *ccp = path_component[c];
-                        while (*cp++ = *ccp++);
+                        while ((*cp++ = *ccp++));
                         *--cp = '/';
                         cp++;
                 }
