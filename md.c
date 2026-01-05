@@ -306,7 +306,7 @@ struct stat statbuf;
         switch(statbuf.st_mode & S_IFMT) {
         case S_IFREG:
                 if (D_time)
-                        printf("%s: file time = %d\n", name, statbuf.st_mtime);
+                        printf("%s: file time = %ld\n", name, (long)statbuf.st_mtime);
 
                 if (statbuf.st_size > IObuffer) {
                         fprintf(stderr, "%s: file \"%s\" tooo big for IObuffer\n",
@@ -316,8 +316,8 @@ struct stat statbuf;
                         break;
                 else if ((int) mak && statbuf.st_mtime < makstat.st_mtime) {
                         if (verbose || D_time)
-                                fprintf(stderr, "%s: skipping \"%s\" %d < %d \"%s\"\n",
-                                        name, file, statbuf.st_mtime, makstat.st_mtime,
+                                fprintf(stderr, "%s: skipping \"%s\" %ld < %ld \"%s\"\n",
+                                        name, file, (long)statbuf.st_mtime, (long)makstat.st_mtime,
                                         real_mak_name);
                         goto out;
                 } else /* >=   =>ok */
@@ -438,8 +438,8 @@ next_filename:
                 dep_files[c].str = tlp;
                 dep_files[c].len = cp - tlp;
                 if (D_depend)
-                        printf("%s: dep_file[%d] = \"%s\" Len %d\n",
-                                name, dep_file_index - 1, tlp, cp - tlp);
+                        printf("%s: dep_file[%d] = \"%s\" Len %ld\n",
+                                name, dep_file_index - 1, tlp, (long)(cp - tlp));
                 tlp = cp + 1;
                 if (oldc)
                   {
@@ -526,7 +526,7 @@ FILE *mak;
         if (D_open)
                 printf("%s: opened makefile \"%s\"\n", name, real_mak_name);
         if (D_time)
-                printf("%s: makefile time = %d\n", name, makstat.st_mtime);
+                printf("%s: makefile time = %ld\n", name, (long)makstat.st_mtime);
 
         return mak;
 }
