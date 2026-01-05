@@ -79,6 +79,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* unlink() */
+#include <unistd.h>
+
+/* open() */
+#include <fcntl.h>
+
 #define LINESIZE 65536  //  NeXT_MOD
 
 #define OUTLINELEN 79
