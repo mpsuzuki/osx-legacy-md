@@ -144,7 +144,7 @@ char *name;
 static void scan_mak(FILE *, FILE *, char *);
 static void finish_mak(FILE *, FILE *);
 
-main(argc,argv)
+int main(argc,argv)
 register char **argv;
 {
 int size;
