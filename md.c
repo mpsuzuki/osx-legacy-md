@@ -85,6 +85,13 @@
 /* open() */
 #include <fcntl.h>
 
+void expunge_mak(FILE*, FILE*);
+void skip_mak(FILE*, FILE*);
+int read_dep(char*);
+void save_dot_o(void);
+void parse_dep(void);
+void output_dep(FILE*);
+
 #define LINESIZE 65536  //  NeXT_MOD
 
 #define OUTLINELEN 79
@@ -275,8 +282,7 @@ usage:
 }
 
 
-read_dep(file)
-register char *file;
+int read_dep(char* file)
 {
 register int fd;
 register int size;
@@ -351,7 +357,7 @@ out: ;
         return 0;
 }
 
-save_dot_o()
+void save_dot_o(void)
 {
 register char *cp = file_array;
 register char *svp = dot_o;
@@ -361,7 +367,7 @@ register int c;
         *svp = 0;
 }
 
-parse_dep()
+void parse_dep(void)
 {
 register char *lp = file_array;
 register int c;
@@ -442,8 +448,7 @@ next_filename:
         }
 }
 
-output_dep(out)
-FILE *out;
+void output_dep(FILE* out)
 {
 register int j;
 register int size = 1000;
@@ -549,8 +554,7 @@ FILE *mak;
         return mak;
 }
 
-skip_mak(makin, makout)
-register FILE *makin, *makout;
+void skip_mak(FILE* makin, FILE* makout)
 {
 register int len = SALUTATIONLEN;
 
@@ -572,8 +576,7 @@ register int len = SALUTATIONLEN;
                 printf("eof = %d str = \"%s\"", mak_eof, makbuf);
 }
 
-expunge_mak(makin, makout)
-register FILE *makin, *makout;
+void expunge_mak(FILE* makin, FILE* makout)
 {
 register int len = SALUTATIONLEN;
 register int oldlen = OLDSALUTATIONLEN;
