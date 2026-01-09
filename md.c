@@ -131,7 +131,8 @@ FILE *makout;                   /* for writing shadow */
 char makbuf[LINESIZE];          /* one line buffer for makefile */
 struct stat makstat;            /* stat of makefile for time comparisons */
 int mak_eof = 0;                        /* eof seen on makefile */
-FILE *find_mak(), *temp_mak();
+FILE *find_mak(char *);
+FILE *temp_mak();
 
 int delete = 0;                 /* -d delete dependency file */
 int debug = 0;
@@ -151,8 +152,7 @@ char *name;
 static void scan_mak(FILE *, FILE *, char *);
 static void finish_mak(FILE *, FILE *);
 
-int main(argc,argv)
-register char **argv;
+int main(int argc, char** argv)
 {
 int size;
 
@@ -224,10 +224,10 @@ newtoken: ;
         }
 
         if (!expunge && argc < 1) goto usage;
-        if ((int) outfile && (int) makefile)    /* not both */
+        if (outfile && makefile)    /* not both */
                 goto usage;
 
-        if ((int) outfile) {
+        if (outfile) {
                 /*
                  * NeXT_MOD, For SGS stuff, in case still linked to master version
                  */
@@ -248,7 +248,7 @@ newtoken: ;
                 else
                         skip_mak(mak, makout);
         } else if (mak_eof &&  /* non existent file == mt file */
-                   (int)(makout = temp_mak())) { /* but we need to be able */
+                   (NULL != (makout = temp_mak()))) { /* but we need to be able */
                 out = makout;                    /* to write here */
         } else if (makefile) {
                 fprintf(stderr, "%s: makefile \"%s\" can not be opened or stat'ed\n",
@@ -314,7 +314,7 @@ struct stat statbuf;
                         goto out;
                 } else if (force)
                         break;
-                else if ((int) mak && statbuf.st_mtime < makstat.st_mtime) {
+                else if (NULL != mak && statbuf.st_mtime < makstat.st_mtime) {
                         if (verbose || D_time)
                                 fprintf(stderr, "%s: skipping \"%s\" %ld < %ld \"%s\"\n",
                                         name, file, (long)statbuf.st_mtime, (long)makstat.st_mtime,
@@ -491,12 +491,11 @@ int written = 0;
 
                 /* process makefile */
 FILE *
-find_mak(file)
-char *file;
+find_mak(char* file)
 {
 FILE *mak;
 
-        if ((int) file) {
+        if (NULL != file) {
                 if ((mak = fopen(file, "r")) != NULL) {
                         real_mak_name = file;
                 } else if (update) {
